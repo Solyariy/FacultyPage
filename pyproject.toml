@@ -1,0 +1,7 @@
+[project]
+name = "lab-2-3-faculty-page"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "django>=6.1.1",
+]

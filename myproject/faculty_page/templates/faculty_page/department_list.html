@@ -1,0 +1,47 @@
+{% extends 'faculty_page/base.html' %}
+{% load faculty_extras %}
+
+{% block title %}Кафедри · {{ block.super }}{% endblock %}
+
+{% block page_header %}
+<section class="page-header">
+  <div class="container">
+    <p class="eyebrow">Структура</p>
+    <h1>Кафедри</h1>
+    <p class="lead">{{ departments|length }} {{ departments|length|uk_plural:"кафедра,кафедри,кафедр" }} факультету гуманітарних наук.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="grid">
+  {% for department in departments %}
+  <article class="card card-link">
+    <h2><a class="stretched" href="{{ department.get_absolute_url }}">{{ department.name }}</a></h2>
+    {% if department.head %}
+    <div class="person">
+      <span class="avatar" aria-hidden="true">{{ department.head.name|initials }}</span>
+      <span>
+        <strong>{{ department.head.name }}</strong>
+        <small>{{ department.head.position.title }}</small>
+      </span>
+    </div>
+    {% else %}
+    <p class="meta">Завідувача не вказано</p>
+    {% endif %}
+    {% with programs=department.programs.all %}
+    {% if programs %}
+    <div class="tags">
+      {% for program in programs %}
+      <a class="tag" href="{{ program.get_absolute_url }}">{{ program.code }} {{ program.name }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+    <span class="more">Детальніше <span aria-hidden="true">→</span></span>
+  </article>
+  {% empty %}
+  <p class="empty">Кафедр поки немає.</p>
+  {% endfor %}
+</div>
+{% endblock %}

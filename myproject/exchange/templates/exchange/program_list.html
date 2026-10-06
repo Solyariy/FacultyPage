@@ -1,0 +1,49 @@
+{% extends 'faculty_page/base.html' %}
+{% load faculty_extras %}
+
+{% block title %}Програми обміну · {{ block.super }}{% endblock %}
+
+{% block page_header %}
+<section class="page-header">
+  <div class="container">
+    <p class="eyebrow">Мобільність</p>
+    <h1>Програми обміну</h1>
+    <p class="lead">Семестр навчання в університетах-партнерах факультету.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+{% if countries %}
+<nav class="tags filter" aria-label="Фільтр за країною">
+  <a class="tag{% if not country %} active{% endif %}" href="{% url 'exchange:program_list' %}">Усі країни</a>
+  {% for item in countries %}
+  <a class="tag{% if item == country %} active{% endif %}" href="?country={{ item|urlencode }}">{{ item }}</a>
+  {% endfor %}
+</nav>
+{% endif %}
+
+<div class="grid">
+  {% for program in programs %}
+  <article class="card">
+    <div class="card-top">
+      {% if program.is_open %}
+      <span class="badge status-open">Прийом триває</span>
+      {% else %}
+      <span class="badge status-closed">Прийом завершено</span>
+      {% endif %}
+    </div>
+    <h2>{{ program.university }}</h2>
+    {% if program.country %}<p class="meta">{{ program.country }}</p>{% endif %}
+    <p class="clamp">{{ program.description }}</p>
+    <div class="card-footer">
+      <p class="meta">Мови навчання: {{ program.languages }}</p>
+      <p class="meta">{{ program.seats }} {{ program.seats|uk_plural:"місце,місця,місць" }}</p>
+      <p class="meta">Дедлайн подачі: {{ program.deadline|date:"d.m.Y" }}</p>
+    </div>
+  </article>
+  {% empty %}
+  <p class="empty">Програм обміну поки немає.</p>
+  {% endfor %}
+</div>
+{% endblock %}

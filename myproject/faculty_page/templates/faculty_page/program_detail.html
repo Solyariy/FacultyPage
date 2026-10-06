@@ -1,0 +1,68 @@
+{% extends 'faculty_page/base.html' %}
+{% load faculty_extras %}
+
+{% block title %}{{ program.name }} · {{ block.super }}{% endblock %}
+
+{% block page_header %}
+<section class="page-header">
+  <div class="container">
+    <nav class="crumbs" aria-label="Навігація">
+      <a href="{% url 'faculty:home' %}">Головна</a>
+      <span aria-hidden="true">/</span>
+      <a href="{% url 'faculty:program_list' %}">Спеціальності</a>
+    </nav>
+    <span class="badge on-band">{{ program.code }}</span>
+    <h1>{{ program.name }}</h1>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="detail-layout">
+  <div>
+    <section class="prose">
+      <h2>Опис</h2>
+      {{ program.description|linebreaks }}
+    </section>
+
+    <section>
+      <h2>Дисципліни <span class="count">{{ disciplines|length }}</span></h2>
+      <ol class="disciplines">
+        {% for discipline in disciplines %}
+        <li class="card">
+          <h3>{{ discipline.name }}</h3>
+          {% if discipline.description %}<p>{{ discipline.description|truncatewords:30 }}</p>{% endif %}
+          {% if discipline.lecturer %}
+          <p class="meta person-inline">
+            <span class="avatar small" aria-hidden="true">{{ discipline.lecturer.name|initials }}</span>
+            {{ discipline.lecturer.name }}
+          </p>
+          {% endif %}
+        </li>
+        {% empty %}
+        <li class="empty">Список дисциплін ще не заповнено.</li>
+        {% endfor %}
+      </ol>
+    </section>
+  </div>
+
+  <aside class="card facts-card">
+    <dl class="facts">
+      <dt>Випускова кафедра</dt>
+      <dd><a href="{{ program.department.get_absolute_url }}">{{ program.department.name }}</a></dd>
+      {% if program.coordinator %}
+      <dt>Координатор набору</dt>
+      <dd>
+        <div class="person">
+          <span class="avatar" aria-hidden="true">{{ program.coordinator.name|initials }}</span>
+          <span>
+            <strong>{{ program.coordinator.name }}</strong>
+            {% if program.coordinator.contact %}<small>{{ program.coordinator.contact|urlize }}</small>{% endif %}
+          </span>
+        </div>
+      </dd>
+      {% endif %}
+    </dl>
+  </aside>
+</div>
+{% endblock %}

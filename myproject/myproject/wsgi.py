@@ -11,6 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myproject.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "myproject.settings")
 
 application = get_wsgi_application()
+
+from faculty_page.positions import load_position_enum  # noqa: E402
+
+load_position_enum()

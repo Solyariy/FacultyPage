@@ -1,0 +1,43 @@
+{% extends 'faculty_page/base.html' %}
+{% load faculty_extras %}
+
+{% block title %}Спеціальності · {{ block.super }}{% endblock %}
+
+{% block page_header %}
+<section class="page-header">
+  <div class="container">
+    <p class="eyebrow">Навчання</p>
+    <h1>Спеціальності</h1>
+    <p class="lead">{{ programs|length }} {{ programs|length|uk_plural:"освітня програма,освітні програми,освітніх програм" }} бакалаврату та магістратури.</p>
+  </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<div class="grid">
+  {% for program in programs %}
+  <article class="card card-link">
+    <div class="card-top">
+      <span class="badge">{{ program.code }}</span>
+    </div>
+    <h2><a class="stretched" href="{{ program.get_absolute_url }}">{{ program.name }}</a></h2>
+    <p class="clamp">{{ program.description|truncatewords:50 }}</p>
+    <div class="card-footer">
+      <p class="meta">Кафедра: {{ program.department.name }}</p>
+      {% if program.coordinator %}
+      <p class="meta person-inline">
+        <span class="avatar small" aria-hidden="true">{{ program.coordinator.name|initials }}</span>
+        <span>
+          {{ program.coordinator.name }}
+          {% if program.coordinator.contact %}<span class="contact-link">{{ program.coordinator.contact|urlize }}</span>{% endif %}
+        </span>
+      </p>
+      {% endif %}
+      <span class="more">Детальніше <span aria-hidden="true">→</span></span>
+    </div>
+  </article>
+  {% empty %}
+  <p class="empty">Спеціальностей поки немає.</p>
+  {% endfor %}
+</div>
+{% endblock %}

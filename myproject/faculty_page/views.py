@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 
-from faculty_page.models import Department, HomePage, Personnel, Program
+from faculty_page.models import Department, HomePage, Program
 
 
 def home(request):
@@ -11,7 +11,6 @@ def home(request):
             "page": HomePage.load(),
             "department_count": Department.objects.count(),
             "program_count": Program.objects.count(),
-            "personnel_count": Personnel.objects.count(),
         },
     )
 

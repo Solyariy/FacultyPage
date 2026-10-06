@@ -319,6 +319,10 @@ a.stat:hover .stat-arrow { transform: translateX(4px); color: var(--accent); }
 .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0 4px; }
 .tag { position: relative; z-index: 2; font-size: 0.8rem; padding: 3px 10px; border-radius: 999px; background: var(--surface-2); color: var(--muted); transition: background 0.15s, color 0.15s; }
 a.tag:hover { background: var(--accent-soft); color: var(--accent); text-decoration: none; }
+.filter { margin: 0 0 20px; }
+.filter .tag.active { background: var(--accent); color: var(--surface); }
+.badge.status-open { background: color-mix(in srgb, #2e8b57 16%, transparent); color: color-mix(in srgb, #2e8b57 80%, var(--text)); }
+.badge.status-closed { background: var(--surface-2); color: var(--muted); }
 .contact-link { display: block; font-size: 0.85rem; }
 .contact-link a { position: relative; z-index: 2; }
 

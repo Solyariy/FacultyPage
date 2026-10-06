@@ -1,44 +1,70 @@
 {% extends 'faculty_page/base.html' %}
+{% load faculty_extras %}
 
 {% block title %}{{ department.name }} · {{ block.super }}{% endblock %}
 
+{% block page_header %}
+<section class="page-header">
+  <div class="container">
+    <nav class="crumbs" aria-label="Навігація">
+      <a href="{% url 'faculty:home' %}">Головна</a>
+      <span aria-hidden="true">/</span>
+      <a href="{% url 'faculty:department_list' %}">Кафедри</a>
+    </nav>
+    <h1>{{ department.name }}</h1>
+  </div>
+</section>
+{% endblock %}
+
 {% block content %}
-<p class="crumbs"><a href="{% url 'faculty:department_list' %}">← Усі кафедри</a></p>
-<h1>{{ department.name }}</h1>
+<div class="detail-layout">
+  <div>
+    <section>
+      <h2>Викладачі <span class="count">{{ personnel|length }}</span></h2>
+      {% if personnel %}
+      <ul class="people">
+        {% for person in personnel %}
+        <li class="card person">
+          <span class="avatar" aria-hidden="true">{{ person.name|initials }}</span>
+          <span>
+            <strong>{{ person.name }}</strong>
+            <small>{{ person.position.title }}{% if person.degree %} · {{ person.degree }}{% endif %}</small>
+          </span>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="empty">Список викладачів ще не заповнено.</p>
+      {% endif %}
+    </section>
 
-<dl class="facts">
-  <dt>Завідувач кафедри</dt>
-  <dd>{% if department.head %}{{ department.head.name }}{% if department.head.degree %}, {{ department.head.degree }}{% endif %}{% else %}—{% endif %}</dd>
-</dl>
+    <section>
+      <h2>Випускова для спеціальностей</h2>
+      <ul class="link-list">
+        {% for program in programs %}
+        <li><a href="{{ program.get_absolute_url }}"><span class="code-dot" aria-hidden="true"></span>{{ program.code }} {{ program.name }} <span class="more" aria-hidden="true">→</span></a></li>
+        {% empty %}
+        <li class="empty">Немає спеціальностей.</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </div>
 
-<section>
-  <h2>Випускова для спеціальностей</h2>
-  <ul class="list">
-    {% for program in programs %}
-    <li><a href="{{ program.get_absolute_url }}">{{ program.code }} {{ program.name }}</a></li>
-    {% empty %}
-    <li class="empty">Немає спеціальностей.</li>
-    {% endfor %}
-  </ul>
-</section>
-
-<section>
-  <h2>Викладачі</h2>
-  {% if personnel %}
-  <table class="table">
-    <thead><tr><th>Ім'я</th><th>Посада</th><th>Науковий ступінь</th></tr></thead>
-    <tbody>
-      {% for person in personnel %}
-      <tr>
-        <td>{{ person.name }}</td>
-        <td>{{ person.position.title }}</td>
-        <td>{{ person.degree|default:"—" }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  {% else %}
-  <p class="empty">Список викладачів ще не заповнено.</p>
-  {% endif %}
-</section>
+  <aside class="card facts-card">
+    <dl class="facts">
+      <dt>Завідувач кафедри</dt>
+      <dd>
+        {% if department.head %}
+        <div class="person">
+          <span class="avatar" aria-hidden="true">{{ department.head.name|initials }}</span>
+          <span>
+            <strong>{{ department.head.name }}</strong>
+            {% if department.head.degree %}<small>{{ department.head.degree }}</small>{% endif %}
+          </span>
+        </div>
+        {% else %}—{% endif %}
+      </dd>
+    </dl>
+  </aside>
+</div>
 {% endblock %}

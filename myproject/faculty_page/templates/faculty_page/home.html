@@ -1,0 +1,30 @@
+{% extends 'faculty_page/base.html' %}
+
+{% block content %}
+<section class="hero">
+  <h1>{{ page.title }}</h1>
+  {% if page.description %}<div class="lead">{{ page.description|linebreaks }}</div>{% endif %}
+</section>
+
+<section class="stats">
+  <a class="stat" href="{% url 'faculty:department_list' %}"><strong>{{ department_count }}</strong> кафедр</a>
+  <a class="stat" href="{% url 'faculty:program_list' %}"><strong>{{ program_count }}</strong> спеціальностей</a>
+  <div class="stat"><strong>{{ personnel_count }}</strong> працівників</div>
+</section>
+
+{% if page.main_info %}
+<section>
+  <h2>Основна інформація</h2>
+  {{ page.main_info|linebreaks }}
+</section>
+{% endif %}
+
+<section class="card">
+  <h2>Контакти</h2>
+  <dl class="contacts">
+    {% if page.address %}<dt>Адреса</dt><dd>{{ page.address }}</dd>{% endif %}
+    {% if page.phone %}<dt>Телефон</dt><dd><a href="tel:{{ page.phone }}">{{ page.phone }}</a></dd>{% endif %}
+    {% if page.email %}<dt>Email</dt><dd><a href="mailto:{{ page.email }}">{{ page.email }}</a></dd>{% endif %}
+  </dl>
+</section>
+{% endblock %}

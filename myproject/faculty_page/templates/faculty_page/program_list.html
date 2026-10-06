@@ -1,0 +1,25 @@
+{% extends 'faculty_page/base.html' %}
+
+{% block title %}Спеціальності · {{ block.super }}{% endblock %}
+
+{% block content %}
+<h1>Спеціальності</h1>
+<div class="grid">
+  {% for program in programs %}
+  <article class="card">
+    <span class="badge">{{ program.code }}</span>
+    <h2><a href="{{ program.get_absolute_url }}">{{ program.name }}</a></h2>
+    <p>{{ program.description|truncatewords:50 }}</p>
+    {% if program.coordinator %}
+    <p class="meta">
+      Координатор набору: {{ program.coordinator.name }}
+      {% if program.coordinator.contact %}· {{ program.coordinator.contact|urlize }}{% endif %}
+    </p>
+    {% endif %}
+    <p class="meta">Кафедра: <a href="{{ program.department.get_absolute_url }}">{{ program.department.name }}</a></p>
+  </article>
+  {% empty %}
+  <p class="empty">Спеціальностей поки немає.</p>
+  {% endfor %}
+</div>
+{% endblock %}

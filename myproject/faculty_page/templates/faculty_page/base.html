@@ -1,0 +1,31 @@
+{% load static %}<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Факультет гуманітарних наук{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'faculty_page/style.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="{% url 'faculty:home' %}">Факультет гуманітарних наук</a>
+      {% with url_name=request.resolver_match.url_name %}
+      <nav class="nav">
+        <a href="{% url 'faculty:home' %}" {% if url_name == 'home' %}class="active"{% endif %}>Головна</a>
+        <a href="{% url 'faculty:program_list' %}" {% if url_name == 'program_list' or url_name == 'program_detail' %}class="active"{% endif %}>Спеціальності</a>
+        <a href="{% url 'faculty:department_list' %}" {% if url_name == 'department_list' or url_name == 'department_detail' %}class="active"{% endif %}>Кафедри</a>
+      </nav>
+      {% endwith %}
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">НаУКМА · Факультет гуманітарних наук</div>
+  </footer>
+</body>
+</html>

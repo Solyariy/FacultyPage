@@ -3,3 +3,4 @@
 .DS-Store
 **/db.sqlite3
 **/__pycache__
+claude-plans

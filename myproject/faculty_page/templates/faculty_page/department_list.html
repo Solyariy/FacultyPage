@@ -1,0 +1,30 @@
+{% extends 'faculty_page/base.html' %}
+
+{% block title %}Кафедри · {{ block.super }}{% endblock %}
+
+{% block content %}
+<h1>Кафедри</h1>
+<div class="grid">
+  {% for department in departments %}
+  <article class="card">
+    <h2><a href="{{ department.get_absolute_url }}">{{ department.name }}</a></h2>
+    <p class="meta">
+      Завідувач:
+      {% if department.head %}{{ department.head.name }} ({{ department.head.position.title|lower }}){% else %}—{% endif %}
+    </p>
+    {% with programs=department.programs.all %}
+    {% if programs %}
+    <p class="meta">Випускова для:</p>
+    <ul class="list compact">
+      {% for program in programs %}
+      <li><a href="{{ program.get_absolute_url }}">{{ program.code }} {{ program.name }}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </article>
+  {% empty %}
+  <p class="empty">Кафедр поки немає.</p>
+  {% endfor %}
+</div>
+{% endblock %}

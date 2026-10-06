@@ -1,30 +1,68 @@
 {% extends 'faculty_page/base.html' %}
+{% load faculty_extras %}
+
+{% block page_header %}
+<section class="hero">
+  <div class="container">
+    <p class="eyebrow">Національний університет «Києво-Могилянська академія»</p>
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}<div class="lead">{{ page.description|linebreaks }}</div>{% endif %}
+    <div class="hero-actions">
+      <a class="button" href="{% url 'faculty:program_list' %}">Обрати спеціальність</a>
+      <a class="button ghost" href="{% url 'faculty:department_list' %}">Кафедри факультету</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
 
 {% block content %}
-<section class="hero">
-  <h1>{{ page.title }}</h1>
-  {% if page.description %}<div class="lead">{{ page.description|linebreaks }}</div>{% endif %}
-</section>
-
 <section class="stats">
-  <a class="stat" href="{% url 'faculty:department_list' %}"><strong>{{ department_count }}</strong> кафедр</a>
-  <a class="stat" href="{% url 'faculty:program_list' %}"><strong>{{ program_count }}</strong> спеціальностей</a>
-  <div class="stat"><strong>{{ personnel_count }}</strong> працівників</div>
+  <a class="stat" href="{% url 'faculty:department_list' %}">
+    <strong>{{ department_count }}</strong>
+    <span>{{ department_count|uk_plural:"кафедра,кафедри,кафедр" }}</span>
+    <span class="stat-arrow" aria-hidden="true">→</span>
+  </a>
+  <a class="stat" href="{% url 'faculty:program_list' %}">
+    <strong>{{ program_count }}</strong>
+    <span>{{ program_count|uk_plural:"спеціальність,спеціальності,спеціальностей" }}</span>
+    <span class="stat-arrow" aria-hidden="true">→</span>
+  </a>
+  <div class="stat">
+    <strong>{{ personnel_count }}</strong>
+    <span>{{ personnel_count|uk_plural:"працівник,працівники,працівників" }}</span>
+  </div>
 </section>
 
-{% if page.main_info %}
-<section>
-  <h2>Основна інформація</h2>
-  {{ page.main_info|linebreaks }}
-</section>
-{% endif %}
+<div class="split">
+  {% if page.main_info %}
+  <section class="prose">
+    <h2>Основна інформація</h2>
+    {{ page.main_info|linebreaks }}
+  </section>
+  {% endif %}
 
-<section class="card">
-  <h2>Контакти</h2>
-  <dl class="contacts">
-    {% if page.address %}<dt>Адреса</dt><dd>{{ page.address }}</dd>{% endif %}
-    {% if page.phone %}<dt>Телефон</dt><dd><a href="tel:{{ page.phone }}">{{ page.phone }}</a></dd>{% endif %}
-    {% if page.email %}<dt>Email</dt><dd><a href="mailto:{{ page.email }}">{{ page.email }}</a></dd>{% endif %}
-  </dl>
-</section>
+  <section class="card contact-card">
+    <h2>Контакти</h2>
+    <ul class="contacts">
+      {% if page.address %}
+      <li>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <span><small>Адреса</small>{{ page.address }}</span>
+      </li>
+      {% endif %}
+      {% if page.phone %}
+      <li>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+        <span><small>Телефон</small><a href="tel:{{ page.phone }}">{{ page.phone }}</a></span>
+      </li>
+      {% endif %}
+      {% if page.email %}
+      <li>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+        <span><small>Email</small><a href="mailto:{{ page.email }}">{{ page.email }}</a></span>
+      </li>
+      {% endif %}
+    </ul>
+  </section>
+</div>
 {% endblock %}
